@@ -1,5 +1,5 @@
 export enum HttpStatusCode {
-  unathorized = 401,
+  unauthorized = 401,
   ok = 200,
   noContent = 204,
   badRequest = 400,
