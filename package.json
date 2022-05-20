@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "webpack-dev-server --open",
     "test": "jest  --passWithNoTests --no-cache --runInBand",
     "test:watch": "npm test -- --watch",
     "test:staged": "npm test -- --findRelatedTests",
@@ -32,6 +33,7 @@
     "faker": "^6.6.6",
     "git-commit-msg-linter": "^4.1.2",
     "husky": "^4.3.8",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^28.1.0",
     "lint-staged": "^12.4.1",
     "ts-jest": "^28.0.1",
