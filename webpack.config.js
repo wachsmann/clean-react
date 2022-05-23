@@ -9,9 +9,9 @@ module.exports = {
     filename: 'bundle.js'
   },
   resolve: {
-    extensions: ['.ts','.tsx','.js','scss'],
+    extensions: ['.ts', '.tsx', '.js', 'scss'],
     alias: {
-      '@':path.join(__dirname, 'src')
+      '@': path.join(__dirname, 'src')
     }
   },
   module: {
@@ -34,20 +34,25 @@ module.exports = {
       {
         loader: 'sass-loader'
       },
-    ]
+      ]
     }
-  ]
-  }
+    ]
+  },
   devServer: {
-    contentBase: './public',
-    writeToDisk: true,
-    historyApiFallback:true
+    devMiddleware: {
+      writeToDisk: true
+    },
+    static: {
+      directory: './public'
+    },
+    historyApiFallback: true,
+    port: 8080
   },
   externals: {
     react: 'React',
     'react-dom': 'ReactDOM'
   },
-  plugins:[
+  plugins: [
     new CleanWebpackPlugin()
   ]
 }
