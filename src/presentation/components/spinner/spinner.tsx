@@ -1,6 +1,8 @@
 import Styles from './spinner-styles.scss'
 import React from 'react'
-
+type Props = React.HTMLAttributes<HTMLElement> & {
+  className: object
+}
 const Spinner: React.FC<Props> = (props: Props) => {
   return (
     <div {...props} data-testid="spinner" className={[Styles.spinner, props.className].join(' ')}>
