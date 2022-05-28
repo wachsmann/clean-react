@@ -22,6 +22,10 @@
     }
     .submit{
       margin-top:32px;
+      &:disabled{
+       background-color: $disabledBackground; 
+       color: $disabledColor; 
+      }
     }
     .link {
       text-align: center;
