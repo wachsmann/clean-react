@@ -3,10 +3,12 @@ import { Input, Footer, FormStatus, LoginHeader } from '@/presentation/component
 import Styles from './login-styles.scss'
 import Context from '@/presentation/components/context/form/form-context'
 import { Validation } from '@/presentation/protocols/validation'
+import { Authentication } from '@/domain/usecases'
 type Props = {
-  validation: Validation
+  validation: Validation,
+  authentication: Authentication
 }
-const Login: React.FC<Props> = ({ validation }: Props) => {
+const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
   const [state, setState] = useState({
     isLoading: false,
     email: '',
@@ -21,15 +23,21 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
       ...{ emailError: validation.validate('email', state.email), passwordError: validation.validate('password', state.password) }
     })
   }, [state.email, state.password])
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-    event.preventDefault()
+
+  const handleSubmit = async (): Promise<void> => {
     setState({ ...state, isLoading: true })
+    await authentication.auth({ email: state.email, password: state.password })
   }
+
   return (
     <div className={Styles.login}>
       <LoginHeader />
       <Context.Provider value={{ state, setState }}>
-        <form className={Styles.form} onSubmit={handleSubmit}>
+        <form className={Styles.form}
+          onSubmit={(event) => {
+            event.preventDefault()
+            handleSubmit()
+          }}>
           <h2>Login</h2>
           <Input type="email" name="email" placeholder='Digite seu e-mail' />
           <Input type="password" name="password" placeholder='Digite sua senha' />
