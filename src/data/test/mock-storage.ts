@@ -1,6 +1,6 @@
 import { SetStorage } from "../protocols/http"
 
-export class SetStorageSpy implements SetStorage {
+export class SetStorageMock implements SetStorage {
   key: String
   value: any
   async set(key: String, value: any): Promise<void> {
