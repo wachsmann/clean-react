@@ -1,7 +1,7 @@
 
 import { RemoteAuthentication } from '@/data/usecases/authentication/remote-authentication'
 import { AuthenticationParams } from '@/domain/usecases/authentication'
-import { HttpPostClientSpy } from '@/data/test'
+import { HttpPostClientSpy } from '@/infra/http/axios-http-client/axios-http-client'
 import { mockAccountModel, mockAuthentication } from '@/domain/test'
 import { HttpStatusCode } from '@/data/protocols/http'
 import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors'
