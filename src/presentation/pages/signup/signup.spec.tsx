@@ -114,4 +114,12 @@ describe('SignUp Component', () => {
       )
     })
   })
+  test('should call AddAccount only once ', () => {
+    const { sut, addAccountSpy } = makeSut()
+    simulateValidSubmit(sut, undefined, undefined,undefined, () => {
+      simulateValidSubmit(sut, undefined, undefined,undefined, () => {
+        expect(addAccountSpy.callsCount).toBe(1)
+      })
+    })
+  })
 })
