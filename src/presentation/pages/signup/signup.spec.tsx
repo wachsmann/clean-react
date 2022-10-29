@@ -29,10 +29,7 @@ const simulateValidSubmit = (sut: RenderResult, email = faker.internet.email(), 
   fireEvent.submit(form)
   waitFor(callback).catch((err) => console.log(err))
 }
-const testElementExists = (sut: RenderResult, fieldName: string): void => {
-  const element = sut.getByTestId(fieldName)
-  expect(element).toBeTruthy()
-}
+
 describe('SignUp Component', () => {
   afterEach(cleanup)
   test('should start with initial state ', () => {
@@ -96,7 +93,7 @@ describe('SignUp Component', () => {
     const { sut } = makeSut()
     simulateValidSubmit(sut, undefined, undefined, () => {
       simulateValidSubmit(sut, undefined, undefined, () => {
-        testElementExists(sut, 'spinner')
+        Helper.testElementExists(sut, 'spinner')
       })
     })
   })
