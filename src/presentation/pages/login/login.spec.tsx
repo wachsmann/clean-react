@@ -43,11 +43,6 @@ const simulateValidSubmit = (sut: RenderResult, email = faker.internet.email(), 
   fireEvent.submit(form)
   waitFor(callback).catch((err) => console.log(err))
 }
-const testElementText = (sut: RenderResult, fieldName: string, text: string): void => {
-  const element = sut.getByTestId(fieldName)
-  expect(element.textContent).toBe(text)
-}
-
 describe('Login Component', () => {
   afterEach(cleanup)
 
@@ -125,7 +120,7 @@ describe('Login Component', () => {
     jest.spyOn(authenticationSpy, 'auth').mockReturnValueOnce(Promise.reject(error))
     simulateValidSubmit(sut, undefined, undefined, () => {
       Helper.testChildCount(sut, 'error-wrap', 1)
-      testElementText(sut, 'main-error', error.message)
+      Helper.testElementText(sut, 'main-error', error.message)
     })
   })
   test('should call SaveAccessToken on success', () => {
@@ -142,7 +137,7 @@ describe('Login Component', () => {
     jest.spyOn(saveAccessTokenMock, 'save').mockReturnValueOnce(Promise.reject(error))
     simulateValidSubmit(sut, undefined, undefined, () => {
       Helper.testChildCount(sut, 'error-wrap', 1)
-      testElementText(sut, 'main-error', error.message)
+      Helper.testElementText(sut, 'main-error', error.message)
     })
   })
   test('should go to signup page', () => {
