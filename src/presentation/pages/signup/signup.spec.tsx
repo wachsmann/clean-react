@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, RenderResult, waitFor } from '@testing-libr
 import SignUp from './signup'
 import { Helper, ValidationStub, AddAccountSpy } from '@/presentation/test'
 import faker from '@faker-js/faker'
+import { EmailInUseError } from '@/domain/errors'
 
 type SutTypes = {
   sut: RenderResult
@@ -22,6 +23,10 @@ const makeSut = (params?: SutParams): SutTypes => {
     sut,
     addAccountSpy
   }
+}
+const testElementText = (sut: RenderResult, fieldName: string, text: string): void => {
+  const element = sut.getByTestId(fieldName)
+  expect(element.textContent).toBe(text)
 }
 const simulateValidSubmit = (sut: RenderResult, name = faker.name.findName(), email = faker.internet.email(), password = faker.internet.password(), callback): void => {
   Helper.populateField(sut, 'name', name)
@@ -128,6 +133,15 @@ describe('SignUp Component', () => {
 
     simulateValidSubmit(sut, undefined, undefined, undefined, () => {
       expect(addAccountSpy.callsCount).toBe(0)
+    })
+  })
+  test('should present error if AddAccount fails', () => {
+    const { sut, addAccountSpy } = makeSut()
+    const error = new EmailInUseError()
+    jest.spyOn(addAccountSpy, 'add').mockReturnValueOnce(Promise.reject(error))
+    simulateValidSubmit(sut, undefined, undefined, undefined, () => {
+      testElementText(sut, 'main-error', error.message)
+      Helper.testChildCount(sut, 'error-wrap', 1)
     })
   })
 })
