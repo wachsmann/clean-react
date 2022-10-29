@@ -1,7 +1,7 @@
 import { HttpPostClient, HttpPostParams, HttpResponse, HttpStatusCode } from '@/data/protocols/http'
 import axios, { AxiosResponse } from 'axios'
 export class AxiosHttpClient implements HttpPostClient<any, any> {
-  async post(params: HttpPostParams<any>): Promise<HttpResponse<any>> {
+  async post (params: HttpPostParams<any>): Promise<HttpResponse<any>> {
     let httpResponse: AxiosResponse<any>
     try {
       httpResponse = await axios.post(params.url, params.body)
@@ -21,7 +21,7 @@ export class HttpPostClientSpy<T, R> implements HttpPostClient<T, R> {
     statusCode: HttpStatusCode.ok
   }
 
-  async post(params: HttpPostParams<T>): Promise<HttpResponse<R>> {
+  async post (params: HttpPostParams<T>): Promise<HttpResponse<R>> {
     this.url = params.url
     this.body = params.body
     return this.response
