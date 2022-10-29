@@ -38,9 +38,9 @@ const SignUp: React.FC<Props> = ({ validation }) => {
         <form className={Styles.form} >
           <h2>Criar conta</h2>
           <Input type="text" name="name" placeholder='Digite seu nome' />
-          <Input data-testid="email" type="email" name="email" placeholder='Digite seu e-mail' />
-          <Input data-testid="password" type="password" name="password" placeholder='Digite sua senha' />
-          <Input data-testid="passwordConfirmation" type="password" name="passwordConfirmation" placeholder='Repita sua senha' />
+          <Input type="email" name="email" placeholder='Digite seu e-mail' />
+          <Input type="password" name="password" placeholder='Digite sua senha' />
+          <Input type="password" name="passwordConfirmation" placeholder='Repita sua senha' />
           <button data-testid="submit" disabled type='submit' >Entrar</button>
           {/* <span to={'/login'} className={Styles.link}>Login</span> */}
           <FormStatus />
