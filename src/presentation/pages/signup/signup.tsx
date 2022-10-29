@@ -17,7 +17,7 @@ const SignUp: React.FC<Props> = ({ validation }) => {
     nameError: '',
     emailError: '',
     passwordError: '',
-    passwordConfirmationError: 'Campo obrigatório',
+    passwordConfirmationError: '',
     mainError: ''
   })
   useEffect(() => {
@@ -27,7 +27,7 @@ const SignUp: React.FC<Props> = ({ validation }) => {
         nameError: validation.validate('name', state.name),
         emailError: validation.validate('email', state.email),
         passwordError: validation.validate('password', state.password),
-        // passwordConfirmationError: validation.validate('password', state.passwordConfirmation)
+        passwordConfirmationError: validation.validate('password', state.passwordConfirmation)
       }
     })
   }, [state.name,state.email, state.password,state.passwordConfirmation])
