@@ -1,4 +1,4 @@
-import { RenderResult } from "@testing-library/react"
+import { RenderResult } from '@testing-library/react'
 
 export const testChildCount = (sut: RenderResult, fieldName: string, count: number): void => {
   const el = sut.getByTestId(fieldName)
