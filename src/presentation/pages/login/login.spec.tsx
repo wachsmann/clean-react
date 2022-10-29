@@ -52,7 +52,6 @@ const populatePasswordField = (sut: RenderResult, password = faker.internet.pass
   fireEvent.input(passwordInput, { target: { value: password } })
 }
 
-
 const testElementExists = (sut: RenderResult, fieldName: string): void => {
   const element = sut.getByTestId(fieldName)
   expect(element).toBeTruthy()
@@ -61,7 +60,6 @@ const testElementText = (sut: RenderResult, fieldName: string, text: string): vo
   const element = sut.getByTestId(fieldName)
   expect(element.textContent).toBe(text)
 }
-
 
 describe('Login Component', () => {
   afterEach(cleanup)
