@@ -148,7 +148,7 @@ describe('SignUp Component', () => {
   test('should present error if AddAccount fails', () => {
     const { sut, addAccountSpy } = makeSut()
     const error = new EmailInUseError()
-    jest.spyOn(addAccountSpy, 'add').mockReturnValueOnce(Promise.reject(error))
+    jest.spyOn(addAccountSpy, 'add').mockRejectedValueOnce(error)
     simulateValidSubmit(sut, undefined, undefined, undefined, () => {
       Helper.testElementText(sut, 'main-error', error.message)
       Helper.testChildCount(sut, 'error-wrap', 1)
@@ -160,6 +160,16 @@ describe('SignUp Component', () => {
       expect(saveAccessTokenMock.accessToken).toBe(addAccountSpy.account.accessToken)
       expect(history.length).toBe(1)
       expect(history.location.pathname).toBe('/')
+    })
+  })
+
+  test('should present error if SaveAccessToken fails', () => {
+    const { sut, saveAccessTokenMock } = makeSut()
+    const error = new EmailInUseError()
+    jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error)
+    simulateValidSubmit(sut, undefined, undefined, undefined, () => {
+      Helper.testChildCount(sut, 'error-wrap', 1)
+      Helper.testElementText(sut, 'main-error', error.message)
     })
   })
 })
