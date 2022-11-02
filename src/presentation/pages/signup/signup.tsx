@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Input, Footer, FormStatus, LoginHeader } from '@/presentation/components'
+import { Input, Footer, FormStatus, LoginHeader, SubmitButton } from '@/presentation/components'
 import Styles from './signup-styles.scss'
 import Context from '@/presentation/components/context/form/form-context'
 import { Validation } from '@/presentation/protocols/validation'
@@ -16,6 +16,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }) =>
   const history = useHistory()
   const [state, setState] = useState({
     isLoading: false,
+    isFormInvalid: true,
     name: '',
     email: '',
     password: '',
@@ -27,13 +28,18 @@ const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }) =>
     mainError: ''
   })
   useEffect(() => {
+    const nameError = validation.validate('name', state.name)
+    const emailError = validation.validate('email', state.email)
+    const passwordError = validation.validate('password', state.password)
+    const passwordConfirmationError = validation.validate('password', state.passwordConfirmation)
     setState({
       ...state,
       ...{
-        nameError: validation.validate('name', state.name),
-        emailError: validation.validate('email', state.email),
-        passwordError: validation.validate('password', state.password),
-        passwordConfirmationError: validation.validate('password', state.passwordConfirmation)
+        nameError,
+        emailError,
+        passwordError,
+        passwordConfirmationError,
+        isFormInvalid: !!emailError || !!passwordError || !!nameError || !!passwordConfirmationError
       }
     })
   }, [state.name, state.email, state.password, state.passwordConfirmation])
@@ -70,18 +76,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }) =>
           <Input type="email" name="email" placeholder='Digite seu e-mail' />
           <Input type="password" name="password" placeholder='Digite sua senha' />
           <Input type="password" name="passwordConfirmation" placeholder='Repita sua senha' />
-          <button
-            data-testid="submit"
-            disabled={
-              !!state.passwordError ||
-              !!state.passwordConfirmationError ||
-              !!state.nameError ||
-              !!state.emailError
-            }
-            type='submit'
-          >
-            Entrar
-          </button>
+          <SubmitButton text="Cadastrar" />
           <Link data-testid="login-link" replace to={'/login'} className={Styles.link}>Login</Link>
           <FormStatus />
         </form>
