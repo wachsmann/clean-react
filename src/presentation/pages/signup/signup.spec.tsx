@@ -1,27 +1,40 @@
 import React from 'react'
 import { cleanup, fireEvent, render, RenderResult, waitFor } from '@testing-library/react'
 import SignUp from './signup'
-import { Helper, ValidationStub, AddAccountSpy } from '@/presentation/test'
+import { Helper, ValidationStub, AddAccountSpy, SaveAccessTokenMock } from '@/presentation/test'
 import faker from '@faker-js/faker'
 import { EmailInUseError } from '@/domain/errors'
+import { createMemoryHistory } from 'history'
+import { Router } from 'react-router-dom'
 
 type SutTypes = {
   sut: RenderResult
   addAccountSpy: AddAccountSpy
+  saveAccessTokenMock: SaveAccessTokenMock
 }
 type SutParams = {
   validationError: string
 }
+const history = createMemoryHistory({ initialEntries: ['/signup'] })
+
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   validationStub.errorMessage = params?.validationError
   const addAccountSpy = new AddAccountSpy()
+  const saveAccessTokenMock = new SaveAccessTokenMock()
   const sut = render(
-    <SignUp validation={validationStub} addAccount={addAccountSpy} />
+    <Router history={history}>
+      <SignUp
+        validation={validationStub}
+        addAccount={addAccountSpy}
+        saveAccessToken={saveAccessTokenMock}
+      />
+    </Router>
   )
   return {
     sut,
-    addAccountSpy
+    addAccountSpy,
+    saveAccessTokenMock
   }
 }
 
@@ -118,8 +131,8 @@ describe('SignUp Component', () => {
   })
   test('should call AddAccount only once ', () => {
     const { sut, addAccountSpy } = makeSut()
-    simulateValidSubmit(sut, undefined, undefined,undefined, () => {
-      simulateValidSubmit(sut, undefined, undefined,undefined, () => {
+    simulateValidSubmit(sut, undefined, undefined, undefined, () => {
+      simulateValidSubmit(sut, undefined, undefined, undefined, () => {
         expect(addAccountSpy.callsCount).toBe(1)
       })
     })
@@ -139,6 +152,14 @@ describe('SignUp Component', () => {
     simulateValidSubmit(sut, undefined, undefined, undefined, () => {
       Helper.testElementText(sut, 'main-error', error.message)
       Helper.testChildCount(sut, 'error-wrap', 1)
+    })
+  })
+  test('should call SaveAccessToken on success', () => {
+    const { sut, addAccountSpy, saveAccessTokenMock } = makeSut()
+    simulateValidSubmit(sut, undefined, undefined, undefined, () => {
+      expect(saveAccessTokenMock.accessToken).toBe(addAccountSpy.account.accessToken)
+      expect(history.length).toBe(1)
+      expect(history.location.pathname).toBe('/')
     })
   })
 })
