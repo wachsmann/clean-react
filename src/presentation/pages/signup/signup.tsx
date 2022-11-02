@@ -5,7 +5,7 @@ import Context from '@/presentation/components/context/form/form-context'
 import { Validation } from '@/presentation/protocols/validation'
 import { AddAccount } from '@/domain/usecases/add-account'
 import { SaveAccessToken } from '@/domain/usecases'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 // import { Link } from 'react-router-dom'
 type Props = {
   validation: Validation
@@ -82,7 +82,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }) =>
           >
             Entrar
           </button>
-          {/* <span to={'/login'} className={Styles.link}>Login</span> */}
+          <Link data-testid="login-link" replace to={'/login'} className={Styles.link}>Login</Link>
           <FormStatus />
         </form>
       </Context.Provider>
